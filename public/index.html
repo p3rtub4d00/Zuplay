@@ -29,7 +29,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .top-actions{margin-left:auto;display:flex;gap:8px}.icon-btn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid #ffffff26;color:#fff;background:#ffffff0b;backdrop-filter:blur(18px)}
 .icon-btn:hover{background:#ffffff16}.icon{width:22px;height:22px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .icon.fill{fill:currentColor;stroke:none}
-.install-btn{border:1px solid #b065ff55;background:#7f2bd433;color:#fff;border-radius:18px;padding:9px 12px}.install-btn[hidden]{display:none}
+.install-invite{position:fixed;z-index:95;left:14px;right:14px;top:14px;display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:center;width:min(520px,calc(100% - 28px));margin:auto;padding:13px;border:1px solid #a95bff66;border-radius:19px;background:linear-gradient(135deg,#26113eeF,#151021ef);backdrop-filter:blur(22px);box-shadow:0 18px 60px #000b,0 0 32px #8b36ff28;animation:installIn .28s ease-out}
+.install-invite.hidden{display:none}.install-invite-logo{width:48px;height:48px;border-radius:13px;background:#0b0712;display:grid;place-items:center;overflow:hidden}.install-invite-logo img{width:42px;height:42px}.install-invite-copy{min-width:0}.install-invite-copy strong{display:block;font-size:13px}.install-invite-copy small{display:block;color:#b9acc6;font-size:10px;line-height:1.4;margin-top:3px}.install-invite-actions{display:flex;gap:6px;align-items:center}.install-invite-actions button{border:0;border-radius:11px;padding:9px 11px;font-size:10px;font-weight:800;color:#fff}.install-now{background:linear-gradient(135deg,#b52eff,#6127de)}.install-later{background:#ffffff0b;border:1px solid #ffffff18!important;color:#d6cadf!important}@keyframes installIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}@media(max-width:520px){.install-invite{grid-template-columns:42px minmax(0,1fr);top:9px}.install-invite-logo{width:42px;height:42px}.install-invite-actions{grid-column:1/-1;justify-content:flex-end}.install-invite-actions button{padding:9px 13px}}
 .account-btn{display:flex;align-items:center;gap:8px;border:1px solid #ffffff22;background:#ffffff0a;color:#fff;border-radius:999px;padding:4px 10px 4px 4px;max-width:160px}
 .account-btn:hover{background:#ffffff14}.account-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#c72df1,#4c37e8);font-size:10px;font-weight:900;box-shadow:0 0 18px #8a32e65c}.account-avatar img{width:100%;height:100%;object-fit:cover}.account-label{font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .auth-stack{display:grid;gap:9px;margin-top:13px}.auth-provider{display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;border:1px solid #ffffff20;border-radius:14px;padding:12px 14px;font-weight:800;color:#fff;background:#ffffff0a}.auth-provider:hover{background:#ffffff15}.auth-provider.disabled{opacity:.45;pointer-events:none}.auth-provider .provider-mark{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:#fff;color:#121212;font-weight:950}.auth-provider.facebook .provider-mark{background:#1877f2;color:#fff}.account-card{display:flex;align-items:center;gap:12px;background:#ffffff08;border:1px solid #ffffff12;border-radius:16px;padding:12px;margin-bottom:12px}.account-card .account-avatar{width:48px;height:48px}.account-card strong{font-size:14px}.account-card small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.sync-note{font-size:11px;color:#bfb1ca;line-height:1.5}
@@ -143,7 +144,6 @@ box-shadow:0 18px 50px #0007}
   <div class="brand"><img src="/icon.svg" alt=""><b>ZU<span>PLAY</span></b></div>
   <div class="desktop-title"><strong>ZUPLAY</strong><small>Vídeos e músicas sem limites</small></div>
   <div class="top-actions">
-    <button id="installBtn" class="install-btn" hidden>Instalar</button>
     <button id="accountBtn" class="account-btn" type="button" aria-label="Conta">
       <span id="accountAvatar" class="account-avatar">ZU</span><span id="accountLabel" class="account-label">Entrar</span>
     </button>
@@ -152,6 +152,12 @@ box-shadow:0 18px 50px #0007}
 </header>
 <section id="view"></section>
 </main></div>
+
+<div id="installInvite" class="install-invite hidden" role="dialog" aria-label="Instalar ZUPLAY">
+  <div class="install-invite-logo"><img src="/icon.svg" alt=""></div>
+  <div class="install-invite-copy"><strong>Instale o ZUPLAY</strong><small>Tenha acesso rápido pela tela inicial e use como aplicativo.</small></div>
+  <div class="install-invite-actions"><button id="installLater" class="install-later" type="button">Agora não</button><button id="installNow" class="install-now" type="button">Instalar</button></div>
+</div>
 
 <div id="miniPlayer" class="mini-player hidden">
   <div id="miniVideo" class="mini-video"></div>
@@ -480,8 +486,31 @@ $('#queueBtn').onclick=()=>$('#queuePanel').classList.toggle('hidden');$('#pipBt
 $('#seek').addEventListener('input',()=>{const d=state.player?.getDuration?.()||0;if(d)state.player.seekTo(d*($('#seek').value/1000),true)});
 document.addEventListener('fullscreenchange',()=>{$('#pipBtn')?.classList.toggle('pip-active',Boolean(document.fullscreenElement))});
 $('#accountBtn').onclick=accountModal;
-let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('#installBtn').hidden=false});window.addEventListener('appinstalled',()=>{$('#installBtn').hidden=true;deferredInstallPrompt=null});
-$('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$('#installBtn').hidden=true}};
+let deferredInstallPrompt=null;
+const isStandalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+const installInvite=$('#installInvite');
+function hideInstallInvite(){installInvite?.classList.add('hidden')}
+function showInstallInvite(){
+ if(isStandalone()||localStorage.getItem('zuplay-installed')==='1')return;
+ installInvite?.classList.remove('hidden')
+}
+window.addEventListener('beforeinstallprompt',e=>{
+ e.preventDefault();deferredInstallPrompt=e;
+ if(!sessionStorage.getItem('zuplay-install-dismissed'))setTimeout(showInstallInvite,700)
+});
+window.addEventListener('appinstalled',()=>{
+ localStorage.setItem('zuplay-installed','1');deferredInstallPrompt=null;hideInstallInvite();toast('ZUPLAY instalado com sucesso')
+});
+$('#installLater').onclick=()=>{sessionStorage.setItem('zuplay-install-dismissed','1');hideInstallInvite()};
+$('#installNow').onclick=async()=>{
+ if(!deferredInstallPrompt)return hideInstallInvite();
+ deferredInstallPrompt.prompt();
+ const choice=await deferredInstallPrompt.userChoice;
+ if(choice?.outcome==='accepted'){localStorage.setItem('zuplay-installed','1');hideInstallInvite()}
+ else{sessionStorage.setItem('zuplay-install-dismissed','1');hideInstallInvite()}
+ deferredInstallPrompt=null
+};
+if(isStandalone()){localStorage.setItem('zuplay-installed','1');hideInstallInvite()}
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
 const startPage=new URLSearchParams(location.search).get('page');page(['home','explore','all','favorites','playlists','history'].includes(startPage)?startPage:'home');ensureHome();initAuth();
 </script>
