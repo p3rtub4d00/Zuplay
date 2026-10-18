@@ -6,16 +6,15 @@ PWA pessoal de vídeos e músicas com interface roxa/ciano, busca do YouTube, pl
 
 1. Instale Node.js 20 ou superior.
 2. Execute `npm install`.
-3. Defina `YOUTUBE_API_KEY` no ambiente ou em arquivo `.env` local (nunca envie a chave ao GitHub).
-4. Execute `npm start` e abra http://localhost:3000.
+3. Execute `npm start` e abra http://localhost:3000.
 
 ## Render
 
-Use **New > Blueprint** e selecione este repositório para ler o `render.yaml`, ou crie um Web Service Node com build `npm install`, start `npm start`, health check `/health`. Adicione `YOUTUBE_API_KEY` em **Environment** e faça o deploy. A porta é configurada automaticamente pelo Render.
+Use **New > Blueprint** e selecione este repositório para ler o `render.yaml`, ou crie um Web Service Node com build `npm install`, start `npm start`, health check `/health`. Não é necessário configurar chave da API oficial do YouTube. Faça o deploy. A porta é configurada automaticamente pelo Render.
 
-## Google Cloud
+## Pesquisa de vídeos
 
-Ative **YouTube Data API v3** no projeto Google Cloud e crie uma chave de API. Restrinja a chave à API e, quando aplicável, ao servidor que fará as chamadas. A busca é feita no backend para não expor a chave no JavaScript público.
+A busca utiliza a biblioteca não oficial `youtube-search-api`, assim como o Contêiner Music. Essa integração pode deixar de funcionar se o YouTube alterar suas páginas ou mecanismos internos. A reprodução utiliza o player incorporado oficial do YouTube.
 
 ## Observações
 
