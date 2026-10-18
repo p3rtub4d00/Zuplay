@@ -387,6 +387,6 @@ $('#seek').addEventListener('input',()=>{const d=state.player?.getDuration?.()||
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('#installBtn').hidden=false});window.addEventListener('appinstalled',()=>{$('#installBtn').hidden=true;deferredInstallPrompt=null});
 $('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$('#installBtn').hidden=true}};
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
-page('home');ensureHome();
+const startPage=new URLSearchParams(location.search).get('page');page(['home','explore','all','favorites','playlists','history'].includes(startPage)?startPage:'home');ensureHome();
 </script>
 </body></html>
