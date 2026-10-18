@@ -30,6 +30,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .icon-btn:hover{background:#ffffff16}.icon{width:22px;height:22px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .icon.fill{fill:currentColor;stroke:none}
 .install-btn{border:1px solid #b065ff55;background:#7f2bd433;color:#fff;border-radius:18px;padding:9px 12px}.install-btn[hidden]{display:none}
+.account-btn{display:flex;align-items:center;gap:8px;border:1px solid #ffffff22;background:#ffffff0a;color:#fff;border-radius:999px;padding:4px 10px 4px 4px;max-width:160px}
+.account-btn:hover{background:#ffffff14}.account-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#c72df1,#4c37e8);font-size:10px;font-weight:900;box-shadow:0 0 18px #8a32e65c}.account-avatar img{width:100%;height:100%;object-fit:cover}.account-label{font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.auth-stack{display:grid;gap:9px;margin-top:13px}.auth-provider{display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;border:1px solid #ffffff20;border-radius:14px;padding:12px 14px;font-weight:800;color:#fff;background:#ffffff0a}.auth-provider:hover{background:#ffffff15}.auth-provider.disabled{opacity:.45;pointer-events:none}.auth-provider .provider-mark{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:#fff;color:#121212;font-weight:950}.auth-provider.facebook .provider-mark{background:#1877f2;color:#fff}.account-card{display:flex;align-items:center;gap:12px;background:#ffffff08;border:1px solid #ffffff12;border-radius:16px;padding:12px;margin-bottom:12px}.account-card .account-avatar{width:48px;height:48px}.account-card strong{font-size:14px}.account-card small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.sync-note{font-size:11px;color:#bfb1ca;line-height:1.5}
 .page-head{padding:12px 0 8px}.page-head h1{font-size:25px;line-height:1.1;margin:0 0 5px;letter-spacing:-.8px}.page-head p{margin:0;color:var(--muted);font-size:13px}
 .chips{display:flex;gap:8px;overflow:auto;padding:12px 1px 8px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
 .chip{flex:0 0 auto;border:1px solid #ffffff20;background:#ffffff09;color:#d8cfe2;border-radius:999px;padding:9px 14px;font-size:12px}
@@ -76,6 +79,7 @@ box-shadow:0 18px 50px #0007}
 .modal-back{position:fixed;z-index:80;inset:0;background:#000b;display:grid;place-items:end center;padding:14px}.modal{width:min(480px,100%);background:#181023;border:1px solid #ffffff20;border-radius:24px;padding:19px;box-shadow:0 24px 80px #000b}.modal h2{font-size:18px;margin:0 0 13px}.modal p{color:var(--muted);font-size:12px}.modal input,.modal select{width:100%;border:1px solid #ffffff20;background:#0d0913;color:#fff;border-radius:13px;padding:12px;margin:6px 0}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:13px}.btn{border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0b;color:#fff;padding:10px 13px}.btn.primary{border:0;background:linear-gradient(135deg,#ae30ff,#6128df);font-weight:800}
 .toast{position:fixed;z-index:99;left:50%;bottom:150px;transform:translateX(-50%);max-width:88vw;background:#271638;border:1px solid #8848b7;color:#fff;padding:11px 15px;border-radius:12px;box-shadow:0 10px 40px #000b;font-size:12px;display:none}
 .desktop-title{display:none}
+@media(max-width:520px){.account-label{display:none}.account-btn{padding:4px}.top-actions{gap:6px}}
 @media(min-width:760px){
   body{padding-left:230px}.desktop-side{display:flex;position:fixed;z-index:25;left:0;top:0;bottom:0;width:230px;background:#0b0712e8;border-right:1px solid #ffffff0e;backdrop-filter:blur(20px);padding:25px 14px;flex-direction:column}
   .desktop-side .brand{padding:0 9px 24px}.side-label{color:#756b80;font-size:9px;letter-spacing:1.8px;margin:10px 10px}.side-nav{display:grid;gap:5px}.side-nav button{display:flex;align-items:center;gap:12px;border:0;background:none;color:#968ba2;padding:12px;border-radius:14px;text-align:left}.side-nav button.active,.side-nav button:hover{color:#fff;background:linear-gradient(90deg,#7326d7,#32125f)}.side-nav .icon{width:22px}
@@ -132,6 +136,9 @@ box-shadow:0 18px 50px #0007}
   <div class="desktop-title"><strong>ZUPLAY</strong><small>Vídeos e músicas sem limites</small></div>
   <div class="top-actions">
     <button id="installBtn" class="install-btn" hidden>Instalar</button>
+    <button id="accountBtn" class="account-btn" type="button" aria-label="Conta">
+      <span id="accountAvatar" class="account-avatar">ZU</span><span id="accountLabel" class="account-label">Entrar</span>
+    </button>
     <button class="icon-btn" data-page="explore" aria-label="Pesquisar"><svg class="icon"><use href="#i-search"/></svg></button>
   </div>
 </header>
@@ -186,7 +193,9 @@ const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const icon=(id,cls='icon')=>'<svg class="'+cls+'"><use href="#i-'+id+'"/></svg>';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const load=(k,f)=>{try{const v=JSON.parse(localStorage.getItem('zuplay-'+k));return v??f}catch{return f}};
-const save=(k,v)=>localStorage.setItem('zuplay-'+k,JSON.stringify(v));
+let authState={ready:false,user:null,providers:{google:false,facebook:false}},cloudSyncTimer=null,cloudSyncBusy=false;
+function persistLocal(k,v){localStorage.setItem('zuplay-'+k,JSON.stringify(v))}
+function save(k,v){persistLocal(k,v);scheduleCloudSync()}
 function migratePlaylists(raw){const out={};for(const [name,val] of Object.entries(raw||{})){out[name]=Array.isArray(val)?{name,items:val}:{name,...val,items:Array.isArray(val?.items)?val.items:[]}}return out}
 const state={
   page:'home',player:null,current:null,queue:[],results:[],recommendations:[],trending:[],allItems:[],
@@ -194,7 +203,43 @@ const state={
   taste:load('taste',{}),shuffle:load('shuffle',false),repeat:load('repeat','off'),playing:false,
   timer:null,homeLoaded:false
 };
-save('playlists',state.playlists);
+function cloudPayload(){return {favorites:state.favorites,history:state.history,playlists:state.playlists,taste:state.taste,settings:{shuffle:state.shuffle,repeat:state.repeat}}}
+function scheduleCloudSync(){if(!authState.ready||!authState.user)return;clearTimeout(cloudSyncTimer);cloudSyncTimer=setTimeout(syncCloud,900)}
+async function syncCloud(){if(!authState.user||cloudSyncBusy)return;cloudSyncBusy=true;try{const r=await fetch('/api/user-data',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(cloudPayload())});if(r.status===401){authState.user=null;updateAccountUi()}else if(!r.ok)throw Error('Falha ao sincronizar')}catch(e){console.info('[ZUPLAY sync]',e.message)}finally{cloudSyncBusy=false}}
+function mergePlaylists(remote,local){const out=migratePlaylists(remote||{});for(const [name,p] of Object.entries(migratePlaylists(local||{}))){if(!out[name])out[name]=p;else out[name].items=uniq([...(out[name].items||[]),...(p.items||[])])}return out}
+function applyCloudData(data){
+ if(!data)return;
+ state.favorites=uniq([...(data.favorites||[]),...state.favorites]);
+ state.history=uniq([...(data.history||[]),...state.history]).slice(0,120);
+ state.playlists=mergePlaylists(data.playlists,state.playlists);
+ const remoteTaste=data.taste||{};for(const [k,v] of Object.entries(remoteTaste))state.taste[k]=Math.max(Number(state.taste[k]||0),Number(v||0));
+ if(data.settings){if(typeof data.settings.shuffle==='boolean')state.shuffle=data.settings.shuffle;if(['off','all','one'].includes(data.settings.repeat))state.repeat=data.settings.repeat}
+ persistLocal('favorites',state.favorites);persistLocal('history',state.history);persistLocal('playlists',state.playlists);persistLocal('taste',state.taste);persistLocal('shuffle',state.shuffle);persistLocal('repeat',state.repeat)
+}
+function initials(name){return String(name||'ZU').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'ZU'}
+function updateAccountUi(){
+ const avatar=$('#accountAvatar'),label=$('#accountLabel');if(!avatar||!label)return;
+ if(authState.user){label.textContent=authState.user.name||'Minha conta';avatar.innerHTML=authState.user.avatar?'<img src="'+esc(authState.user.avatar)+'" alt="">':esc(initials(authState.user.name))}
+ else{label.textContent='Entrar';avatar.textContent='ZU'}
+}
+async function initAuth(){
+ try{
+  const [me,providers]=await Promise.all([fetch('/api/me').then(r=>r.json()),fetch('/api/auth/providers').then(r=>r.json()).catch(()=>({}))]);
+  authState.providers={google:Boolean(providers.google),facebook:Boolean(providers.facebook)};
+  if(me.authenticated&&me.user){authState.user=me.user;applyCloudData(me.data);authState.ready=true;updateAccountUi();renderPage();await syncCloud();const u=new URL(location.href);if(u.searchParams.has('login')){u.searchParams.delete('login');history.replaceState({},'',u.pathname+u.search)}}
+  else{authState.ready=true;updateAccountUi();if(new URLSearchParams(location.search).get('login')==='error')toast('Não foi possível concluir o login.')}
+ }catch(e){authState.ready=true;console.info('[Auth]',e.message)}
+}
+function accountModal(){
+ if(authState.user){
+  modal('Minha conta','<div class="account-card"><span class="account-avatar">'+(authState.user.avatar?'<img src="'+esc(authState.user.avatar)+'" alt="">':esc(initials(authState.user.name)))+'</span><div><strong>'+esc(authState.user.name||'Usuário ZUPLAY')+'</strong><small>'+esc(authState.user.email||authState.user.provider||'Conta conectada')+'</small></div></div><p class="sync-note">Favoritos, playlists, histórico e preferências são sincronizados com sua conta.</p>','<button class="btn primary" id="logoutBtn">Sair da conta</button>');
+  setTimeout(()=>{$('#logoutBtn').onclick=logoutAccount},0);return;
+ }
+ const g=authState.providers.google,f=authState.providers.facebook;
+ modal('Entrar no ZUPLAY','<p class="sync-note">Entre para salvar favoritos, playlists, histórico e preferências no MongoDB e usar em outros aparelhos.</p><div class="auth-stack"><a class="auth-provider '+(g?'':'disabled')+'" href="/auth/google"><span class="provider-mark">G</span>Continuar com Google</a><a class="auth-provider facebook '+(f?'':'disabled')+'" href="/auth/facebook"><span class="provider-mark">f</span>Continuar com Facebook</a></div>'+((!g&&!f)?'<p class="sync-note">Os provedores de login ainda precisam ser configurados no servidor.</p>':'') ,'');
+}
+async function logoutAccount(){try{await fetch('/api/logout',{method:'POST'});authState.user=null;closeModal();updateAccountUi();toast('Você saiu da conta. Os dados continuam neste aparelho.')}catch{toast('Não foi possível sair agora')}}
+persistLocal('playlists',state.playlists);
 const genreTerms={
  sertanejo:['sertanejo','modão','modao','agro','sofrência','sofrencia','ana castela','henrique e juliano','jorge e mateus','gusttavo','marília','marilia','luan santana'],
  funk:['funk','mc ','mandelão','mandelao','automotivo','dj arana'],
@@ -384,9 +429,10 @@ $('#favoriteCurrent').onclick=()=>fav(state.current);$('#shuffleBtn').onclick=()
 $('#repeatBtn').onclick=()=>{state.repeat=state.repeat==='off'?'all':state.repeat==='all'?'one':'off';save('repeat',state.repeat);updatePlayerMeta();toast(state.repeat==='off'?'Repetição desligada':state.repeat==='all'?'Repetir fila':'Repetir música')};
 $('#queueBtn').onclick=()=>$('#queuePanel').classList.toggle('hidden');$('#timerBtn').onclick=setTimer;$('#shareBtn').onclick=shareCurrent;$('#radioBtn').onclick=radioCurrent;$('#playerMenu').onclick=()=>addToPlaylist(state.current);
 $('#seek').addEventListener('input',()=>{const d=state.player?.getDuration?.()||0;if(d)state.player.seekTo(d*($('#seek').value/1000),true)});
+$('#accountBtn').onclick=accountModal;
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('#installBtn').hidden=false});window.addEventListener('appinstalled',()=>{$('#installBtn').hidden=true;deferredInstallPrompt=null});
 $('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$('#installBtn').hidden=true}};
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
-const startPage=new URLSearchParams(location.search).get('page');page(['home','explore','all','favorites','playlists','history'].includes(startPage)?startPage:'home');ensureHome();
+const startPage=new URLSearchParams(location.search).get('page');page(['home','explore','all','favorites','playlists','history'].includes(startPage)?startPage:'home');ensureHome();initAuth();
 </script>
 </body></html>
