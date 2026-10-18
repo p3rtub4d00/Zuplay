@@ -78,12 +78,12 @@ box-shadow:0 18px 50px #0007}
 .wave{display:flex;gap:3px;height:34px;align-items:center;justify-content:center;margin:26px 0 8px;opacity:.9}.wave i{display:block;width:2px;background:#fff;border-radius:9px}
 .progress-row{display:flex;align-items:center;gap:8px;color:#e8def0;font-size:10px}.seek{flex:1;accent-color:#fff}
 .player-controls{display:grid;grid-template-columns:repeat(5,1fr);align-items:center;gap:10px;margin:25px 0 15px}.player-controls button{border:0;background:none;color:#fff;display:grid;place-items:center;height:54px;border-radius:50%}.player-controls button.main{background:#ffffff1e;border:1px solid #ffffff42;width:62px;height:62px;justify-self:center;box-shadow:0 10px 28px #0003}.player-controls button.active{color:#ff7ee8;background:#ffffff12}
-.player-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.player-tools button{border:1px solid #ffffff22;background:#ffffff0b;color:#f4ebf6;border-radius:14px;padding:10px 6px;font-size:10px;display:grid;place-items:center;gap:5px}.player-tools .icon{width:19px;height:19px}
+.player-tools{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.player-tools button{border:1px solid #ffffff22;background:#ffffff0b;color:#f4ebf6;border-radius:14px;padding:10px 6px;font-size:10px;display:grid;place-items:center;gap:5px}.player-tools .icon{width:19px;height:19px}.player-tools button.pip-ready{border-color:#54dfff88;color:#8beeff;background:#1cbcff12}.player-tools button.pip-active{border-color:#d751ff88;color:#ff98ff;background:#be29ff16}
 .queue-panel{margin-top:18px;border-top:1px solid #ffffff22;padding-top:15px}.queue-panel h3{font-size:14px;margin:0 0 9px}.queue-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #ffffff16}.queue-item strong{font-size:11px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.queue-item small{font-size:9px;color:#dfd2e5}.queue-buttons{display:flex;gap:4px}.queue-buttons button{width:30px;height:30px;border:1px solid #ffffff1d;background:#ffffff0c;color:#fff;border-radius:9px}
 .modal-back{position:fixed;z-index:80;inset:0;background:#000b;display:grid;place-items:end center;padding:14px}.modal{width:min(480px,100%);background:#181023;border:1px solid #ffffff20;border-radius:24px;padding:19px;box-shadow:0 24px 80px #000b}.modal h2{font-size:18px;margin:0 0 13px}.modal p{color:var(--muted);font-size:12px}.modal input,.modal select{width:100%;border:1px solid #ffffff20;background:#0d0913;color:#fff;border-radius:13px;padding:12px;margin:6px 0}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:13px}.btn{border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0b;color:#fff;padding:10px 13px}.btn.primary{border:0;background:linear-gradient(135deg,#ae30ff,#6128df);font-weight:800}
 .toast{position:fixed;z-index:99;left:50%;bottom:150px;transform:translateX(-50%);max-width:88vw;background:#271638;border:1px solid #8848b7;color:#fff;padding:11px 15px;border-radius:12px;box-shadow:0 10px 40px #000b;font-size:12px;display:none}
 .desktop-title{display:none}
-@media(max-width:520px){.account-label{display:none}.account-btn{padding:4px}.top-actions{gap:6px}}
+@media(max-width:520px){.account-label{display:none}.account-btn{padding:4px}.top-actions{gap:6px}.player-tools{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.player-tools button{font-size:8px;padding:9px 2px}.player-tools .icon{width:17px;height:17px}}
 @media(min-width:760px){
   #youtubeMount.yt-full{top:102px}
   #youtubeMount.yt-mini{left:auto;right:327px;bottom:26px;width:96px;height:54px}
@@ -116,6 +116,7 @@ box-shadow:0 18px 50px #0007}
 <symbol id="i-radio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.3 4.3a11 11 0 0 0 0 15.4M19.7 4.3a11 11 0 0 1 0 15.4"/></symbol>
 <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></symbol>
 <symbol id="i-queue" viewBox="0 0 24 24"><path d="M4 6h10M4 10h10M4 14h7M17 14v5a2 2 0 1 1-2-2c.7 0 1.4.2 2 .6M19 5v6"/></symbol>
+<symbol id="i-pip" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="5" rx="1"/><path d="M7 9h3M7 13h2"/></symbol>
 <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
 <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
 <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></symbol>
@@ -184,6 +185,7 @@ box-shadow:0 18px 50px #0007}
     <div class="player-tools">
       <button id="radioBtn"><svg class="icon"><use href="#i-radio"/></svg>Rádio</button>
       <button id="queueBtn"><svg class="icon"><use href="#i-queue"/></svg>Fila</button>
+      <button id="pipBtn"><svg class="icon"><use href="#i-pip"/></svg>Flutuante</button>
       <button id="timerBtn"><svg class="icon"><use href="#i-clock"/></svg>Timer</button>
       <button id="shareBtn"><svg class="icon"><use href="#i-share"/></svg>Compartilhar</button>
     </div>
@@ -371,7 +373,7 @@ function previous(){
 function togglePlayback(){if(!state.player)return;state.player.getPlayerState()===YT.PlayerState.PLAYING?state.player.pauseVideo():state.player.playVideo()}
 function createPlayer(id){
  state.player=new YT.Player('youtubeFrame',{videoId:id,playerVars:{playsinline:1,rel:0,autoplay:1,origin:location.origin},events:{
-   onReady:e=>{e.target.playVideo();startProgress()},
+   onReady:e=>{configureYoutubeFrame(e.target);e.target.playVideo();startProgress()},
    onStateChange:e=>{if(e.data===YT.PlayerState.ENDED)next();if(e.data===YT.PlayerState.PLAYING)syncPlay(true);if(e.data===YT.PlayerState.PAUSED)syncPlay(false)},
    onError:e=>{const failedId=state.current?.id;toast('Não foi possível reproduzir esta música.');setTimeout(()=>{if(state.current?.id===failedId)next()},900)}
  }})
@@ -382,12 +384,47 @@ function syncPlay(on){if(!state.current)$('#youtubeMount').className='';
  ['#mainToggle','#miniToggle'].forEach(s=>{const b=$(s);if(b)b.innerHTML=icon(use)});
  try{if('mediaSession'in navigator)navigator.mediaSession.playbackState=on?'playing':'paused'}catch{}
 }
+function configureYoutubeFrame(player=state.player){
+ const iframe=player?.getIframe?.();if(!iframe)return null;
+ const existing=iframe.getAttribute('allow')||'';
+ const required=['autoplay','encrypted-media','picture-in-picture','fullscreen'];
+ const merged=[...new Set(existing.split(';').map(x=>x.trim()).filter(Boolean).concat(required))].join('; ');
+ iframe.setAttribute('allow',merged);
+ iframe.setAttribute('allowfullscreen','');
+ iframe.setAttribute('playsinline','');
+ $('#pipBtn')?.classList.add('pip-ready');
+ return iframe
+}
+function pipHelp(){
+ modal('Tela flutuante','<p class="sync-note">Ativamos a permissão de Picture-in-Picture no player do YouTube. No Android, a disponibilidade final depende do Chrome/PWA e do próprio vídeo.</p><p class="sync-note">Se a janela flutuante não abrir sozinha, toque em <b>Tela flutuante</b>, deixe o vídeo entrar em tela cheia e pressione o botão Início do Android.</p>','<button class="btn primary" data-close-modal>Entendi</button>')
+}
+async function requestPip(){
+ if(!state.current||!state.player)return toast('Reproduza uma música primeiro.');
+ const iframe=configureYoutubeFrame();
+ if(!iframe)return toast('O player ainda está carregando.');
+ // Browsers only expose requestPictureInPicture() directly for native HTMLVideoElement.
+ // For a cross-origin YouTube iframe, enable the permission and use Android/YouTube native PiP behavior.
+ try{
+   if(document.pictureInPictureElement){await document.exitPictureInPicture();$('#pipBtn')?.classList.remove('pip-active');return}
+ }catch{}
+ try{
+   if(document.fullscreenElement){await document.exitFullscreen()}
+   if(iframe.requestFullscreen){
+     await iframe.requestFullscreen({navigationUI:'hide'});
+     $('#pipBtn')?.classList.add('pip-active');
+     toast('Tela cheia ativada. Agora pressione Início no Android para testar a janela flutuante.');
+     return
+   }
+ }catch(e){console.info('[PiP/fullscreen]',e.message)}
+ pipHelp()
+}
 function updateMediaSession(v){
  if(!('mediaSession'in navigator)||!v)return;
  try{
  navigator.mediaSession.metadata=new MediaMetadata({title:v.title,artist:v.channel||'YouTube',album:'ZUPLAY',artwork:v.thumbnail?[{src:v.thumbnail,sizes:'320x180'}]:[]});
  navigator.mediaSession.setActionHandler('play',()=>state.player?.playVideo());navigator.mediaSession.setActionHandler('pause',()=>state.player?.pauseVideo());
- navigator.mediaSession.setActionHandler('nexttrack',next);navigator.mediaSession.setActionHandler('previoustrack',previous)
+ navigator.mediaSession.setActionHandler('nexttrack',next);navigator.mediaSession.setActionHandler('previoustrack',previous);
+ try{navigator.mediaSession.setActionHandler('enterpictureinpicture',requestPip)}catch{}
  }catch{}
 }
 function updatePlayerMeta(){
@@ -439,8 +476,9 @@ document.addEventListener('click',e=>{
 $('#closePlayer').onclick=()=>{minimizePlayer();page('home')};$('#miniToggle').onclick=togglePlayback;$('#miniNext').onclick=next;$('#mainToggle').onclick=togglePlayback;$('#nextBtn').onclick=next;$('#prevBtn').onclick=previous;
 $('#favoriteCurrent').onclick=()=>fav(state.current);$('#shuffleBtn').onclick=()=>{state.shuffle=!state.shuffle;save('shuffle',state.shuffle);if(state.shuffle)state.queue.sort(()=>Math.random()-.5);updatePlayerMeta();renderQueue();toast(state.shuffle?'Aleatório ativado':'Aleatório desativado')};
 $('#repeatBtn').onclick=()=>{state.repeat=state.repeat==='off'?'all':state.repeat==='all'?'one':'off';save('repeat',state.repeat);updatePlayerMeta();toast(state.repeat==='off'?'Repetição desligada':state.repeat==='all'?'Repetir fila':'Repetir música')};
-$('#queueBtn').onclick=()=>$('#queuePanel').classList.toggle('hidden');$('#timerBtn').onclick=setTimer;$('#shareBtn').onclick=shareCurrent;$('#radioBtn').onclick=radioCurrent;$('#playerMenu').onclick=()=>addToPlaylist(state.current);
+$('#queueBtn').onclick=()=>$('#queuePanel').classList.toggle('hidden');$('#pipBtn').onclick=requestPip;$('#timerBtn').onclick=setTimer;$('#shareBtn').onclick=shareCurrent;$('#radioBtn').onclick=radioCurrent;$('#playerMenu').onclick=()=>addToPlaylist(state.current);
 $('#seek').addEventListener('input',()=>{const d=state.player?.getDuration?.()||0;if(d)state.player.seekTo(d*($('#seek').value/1000),true)});
+document.addEventListener('fullscreenchange',()=>{$('#pipBtn')?.classList.toggle('pip-active',Boolean(document.fullscreenElement))});
 $('#accountBtn').onclick=accountModal;
 let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('#installBtn').hidden=false});window.addEventListener('appinstalled',()=>{$('#installBtn').hidden=true;deferredInstallPrompt=null});
 $('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$('#installBtn').hidden=true}};
