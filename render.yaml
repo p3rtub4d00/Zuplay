@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: zuplay
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: YOUTUBE_API_KEY
+        sync: false
