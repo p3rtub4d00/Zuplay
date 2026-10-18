@@ -4,15 +4,41 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0b0b14",
-  "theme_color": "#0b0b14",
-  "description": "Seu espaço de vídeos, músicas e playlists",
+  "background_color": "#090611",
+  "theme_color": "#12091f",
+  "description": "Seu espaço de vídeos, músicas, favoritos e playlists",
   "icons": [
     {
       "src": "/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Explorar",
+      "short_name": "Explorar",
+      "url": "/?page=explore",
+      "icons": [
+        {
+          "src": "/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Favoritos",
+      "short_name": "Favoritos",
+      "url": "/?page=favorites",
+      "icons": [
+        {
+          "src": "/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
     }
   ]
 }
